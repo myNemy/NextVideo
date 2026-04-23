@@ -1,0 +1,20 @@
+# App version (`versionCode` / `versionName`)
+
+## Goal
+
+Each time installable app changes are committed and pushed to `main`, the version must advance so:
+
+- users can upgrade (monotonic `versionCode`)
+- CI/release metadata can produce a new tag/release row (changing `versionName`)
+
+## Where
+
+- `app/build.gradle.kts`
+  - `defaultConfig { versionCode = ... }`
+  - `defaultConfig { versionName = "..." }`
+
+## Rule
+
+- `versionCode`: **+1** for each release-ready commit/push that ships app changes.
+- `versionName`: bump at least **patch** (`0.1.0` → `0.1.1`) for each publish intended to create a new release entry/tag.
+

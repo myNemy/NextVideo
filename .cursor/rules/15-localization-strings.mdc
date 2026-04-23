@@ -1,0 +1,14 @@
+# Localization: Android string resources
+
+When adding/renaming/changing a resource in:
+
+- `app/src/main/res/values/strings.xml` (and related `values/` XML files)
+
+You MUST apply the equivalent change to **all** existing locale files in the repo (`values-it`, `values-ro`, etc.).
+
+## Safety checks
+
+- Keep placeholders (`%1$s`, `%d`) consistent across locales.
+- Keep punctuation/escaping consistent.
+- Prefer copying the English string as a temporary fallback rather than leaving missing keys.
+

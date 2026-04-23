@@ -1,0 +1,17 @@
+# Changelog (Fastlane / store metadata)
+
+This project should track release notes in Fastlane-style metadata:
+
+- `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`
+
+Rules:
+
+- Whenever `versionCode` is bumped in `app/build.gradle.kts`, add a matching changelog file named exactly `<versionCode>.txt`.
+- Changelog entries must be **English**, short and user-facing (**2–10 lines**).
+- The changelog MUST describe the actual shipped changes (no generic filler).
+- Prefer one change per line with prefixes:
+  - `- Fix: …`
+  - `- Add: …`
+  - `- Change: …`
+  - `- Security: …`
+

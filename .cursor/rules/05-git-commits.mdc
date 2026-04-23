@@ -1,0 +1,14 @@
+# Git commits
+
+- All commit messages (subject + optional body) must be written in **English**.
+- Prefer imperative, clear subjects (e.g. `feat:`, `fix:`, `docs:`).
+
+## Dual remote (required when publishing)
+
+This repo is expected to have **two remotes**:
+
+1. `git push forgejo <branch>`
+2. `git push origin <branch>`
+
+Do not consider work “published” until both pushes succeed, unless explicitly instructed otherwise.
+

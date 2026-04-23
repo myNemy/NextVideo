@@ -1,0 +1,32 @@
+# Commit, push, release automation
+
+## Product goal
+
+When app-impacting changes are pushed to `main`, maintainers expect a **new release entry** (new tag) rather than overwriting artifacts on an old tag. That requires **bumping `versionName`** for each publish.
+
+## Agent obligation (unless explicitly told "WIP/no release")
+
+Before `git commit` (and before any `git push`) that includes app-impacting changes, the agent MUST:
+
+1. Edit `app/build.gradle.kts`:
+   - `versionCode`: **+1**
+   - `versionName`: bump at least **patch**
+2. Add `fastlane/metadata/android/en-US/changelogs/<newVersionCode>.txt` describing the shipped changes (2–10 lines).
+
+## What counts as “app-impacting”
+
+Version bump required when the diff touches e.g.:
+
+- `app/src/**` (Kotlin, resources, manifest, assets)
+- `app/build.gradle.kts` or other app module build inputs
+- Anything that changes the built APK behavior, metadata, or what users see
+
+Not required when changes are only docs/repo metadata with no APK impact.
+
+## Dual remote
+
+After the commit, push to both remotes:
+
+- `git push forgejo <branch>`
+- `git push origin <branch>`
+

@@ -1,0 +1,22 @@
+# Android / Kotlin / Compose
+
+## Playback
+
+- Use **Media3** for video playback.
+- Prefer streaming via authenticated HTTP requests; handle auth headers through a single, testable layer.
+- Playback should resume position (per account + per file) when possible.
+
+## Offline downloads
+
+- Use **WorkManager** for long-running background downloads.
+- Downloads must support:
+  - foreground notifications when required by Android (long tasks)
+  - retry/backoff for transient network errors
+  - pause/cancel
+- Avoid keeping the CPU awake in a loop; rely on WorkManager + constraints (e.g. `NetworkType.CONNECTED`).
+
+## Data safety
+
+- Store credentials only with **EncryptedSharedPreferences**.
+- Do not leak secrets to logs or crash reports.
+

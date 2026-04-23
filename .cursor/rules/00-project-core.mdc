@@ -1,0 +1,26 @@
+# NextVideo (Android) - core rules
+
+## Product goal
+
+- Android app to **browse and play videos from Nextcloud** (WebDAV), with:
+  - **multi-account**
+  - **library + search**
+  - **streaming playback**
+  - **offline downloads** (user-controlled)
+
+## Stack & conventions
+
+- Kotlin + Gradle Kotlin DSL (`.kts`)
+- UI: Jetpack Compose
+- Video: **AndroidX Media3 (ExoPlayer)**
+- Networking: **OkHttp**
+- Persistence: Room
+- Credentials/tokens: **EncryptedSharedPreferences** (never plaintext)
+
+## Security & privacy (hard requirements)
+
+- Never log full URLs that may contain credentials.
+- Never log `Authorization` headers or access tokens.
+- Default to **HTTPS** (no cleartext by default).
+- Offline downloads must be stored in **app-private storage** unless user explicitly exports.
+
