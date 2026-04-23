@@ -69,7 +69,7 @@ class NextcloudWebDavClient(
 
         var event = parser.eventType
         while (event != XmlPullParser.END_DOCUMENT) {
-            if (event == XmlPullParser.START_TAG && parser.localName == "response") {
+            if (event == XmlPullParser.START_TAG && parser.name == "response") {
                 parseResponse(parser)?.let { items += it }
             }
             event = parser.next()
@@ -88,9 +88,9 @@ class NextcloudWebDavClient(
         var isDirectory = false
 
         var event = parser.next()
-        while (!(event == XmlPullParser.END_TAG && parser.localName == "response")) {
+        while (!(event == XmlPullParser.END_TAG && parser.name == "response")) {
             if (event == XmlPullParser.START_TAG) {
-                when (parser.localName) {
+                when (parser.name) {
                     "href" -> href = parser.nextText()
                     "displayname" -> displayName = parser.nextText()
                     "getcontenttype" -> contentType = parser.nextText().takeIf { it.isNotBlank() }
