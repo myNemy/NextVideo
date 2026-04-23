@@ -20,7 +20,6 @@ fun SettingsScreen(
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.title_settings), style = MaterialTheme.typography.titleLarge)
         Text(stringResource(R.string.coming_soon), color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

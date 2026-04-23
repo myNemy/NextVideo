@@ -1,6 +1,8 @@
 package dev.nemeyes.nextvideo.ui.main
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -9,6 +11,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -77,17 +80,39 @@ fun MainTabsScreen(
         onThemingChanged(theming)
     }
 
+    val currentTab = MainTab.entries[selectedTab]
+    val topBarColors =
+        TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+        )
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("NextVideo") },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
+                title = {
+                    Text(
+                        when (currentTab) {
+                            MainTab.Home -> stringResource(R.string.title_accounts)
+                            MainTab.Library -> stringResource(R.string.title_library)
+                            MainTab.Settings -> stringResource(R.string.title_settings)
+                            MainTab.Info -> stringResource(R.string.title_info)
+                        },
+                    )
+                },
+                actions = {
+                    if (currentTab == MainTab.Home) {
+                        FilledTonalButton(
+                            onClick = onAddAccount,
+                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+                        ) {
+                            Text(stringResource(R.string.action_add))
+                        }
+                    }
+                },
+                colors = topBarColors,
             )
         },
         bottomBar = {
@@ -107,41 +132,46 @@ fun MainTabsScreen(
             }
         },
         containerColor = MaterialTheme.colorScheme.background,
-    ) { padding ->
-        when (MainTab.entries[selectedTab]) {
-            MainTab.Home -> {
-                AccountsScreen(
-                    accountRepository = accountRepository,
-                    onAddAccount = onAddAccount,
-                    showAppBar = false,
-                    onOpenAccount = { id ->
-                        selectedAccountId = id
-                        selectedTab = MainTab.Library.ordinal
-                    },
-                )
-            }
-            MainTab.Library -> {
-                val accId = selectedAccountId
-                if (accId == null) {
-                    Column(
-                        modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
-                    ) {
-                        Text(stringResource(R.string.library_select_account_hint))
-                    }
-                } else {
-                    LibraryScreen(
-                        accountId = accId,
-                        db = db,
-                        libraryRepository = libraryRepository,
-                        downloadRepository = downloadRepository,
+    ) { contentPadding ->
+        // Apply Scaffold insets to every tab; previously Home/Library ignored this and content drew under bars.
+        Box(
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
+        ) {
+            when (currentTab) {
+                MainTab.Home -> {
+                    AccountsScreen(
+                        accountRepository = accountRepository,
+                        onAddAccount = onAddAccount,
                         showAppBar = false,
-                        onSaveFolderHref = { href -> onSaveFolderHref(accId, href) },
-                        onOpenVideo = { videoId -> onOpenVideo(accId, videoId) },
+                        onOpenAccount = { id ->
+                            selectedAccountId = id
+                            selectedTab = MainTab.Library.ordinal
+                        },
                     )
                 }
+                MainTab.Library -> {
+                    val accId = selectedAccountId
+                    if (accId == null) {
+                        Column(
+                            modifier = Modifier.fillMaxSize().padding(16.dp),
+                        ) {
+                            Text(stringResource(R.string.library_select_account_hint))
+                        }
+                    } else {
+                        LibraryScreen(
+                            accountId = accId,
+                            db = db,
+                            libraryRepository = libraryRepository,
+                            downloadRepository = downloadRepository,
+                            showAppBar = false,
+                            onSaveFolderHref = { href -> onSaveFolderHref(accId, href) },
+                            onOpenVideo = { videoId -> onOpenVideo(accId, videoId) },
+                        )
+                    }
+                }
+                MainTab.Settings -> SettingsScreen()
+                MainTab.Info -> InfoScreen()
             }
-            MainTab.Settings -> SettingsScreen(modifier = Modifier.padding(padding))
-            MainTab.Info -> InfoScreen(modifier = Modifier.padding(padding))
         }
     }
 }

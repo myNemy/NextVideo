@@ -1,0 +1,3 @@
+- Fix: Apply main-tab Scaffold insets to Home and Library so list content is not drawn under the top and bottom bars.
+- Change: Top app bar shows the current section title (Accounts, Library, Settings, Info) and the Add action on Home.
+- Change: Settings body no longer duplicates the screen title.
