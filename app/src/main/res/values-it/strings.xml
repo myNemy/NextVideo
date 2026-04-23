@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NextVideo</string>
+
+    <string name="title_accounts">Account</string>
+    <string name="action_add">Aggiungi</string>
+    <string name="empty_accounts">Nessun account. Aggiungine uno per iniziare.</string>
+
+    <string name="title_add_account">Aggiungi account (Nextcloud Login v2)</string>
+    <string name="field_server_base_url">URL base del server</string>
+    <string name="action_login">Accedi</string>
+    <string name="status_starting_login">Avvio accesso…</string>
+    <string name="status_open_browser_approve">Apri il browser e approva…</string>
+    <string name="status_saving_account">Salvataggio account…</string>
+    <string name="status_done">Fatto</string>
+    <string name="status_error_fmt">Errore: %1$s</string>
+
+    <string name="title_library">Libreria</string>
+    <string name="error_account_not_found">Account non trovato.</string>
+    <string name="action_refresh">Aggiorna</string>
+    <string name="field_library_folder_href">Href cartella libreria</string>
+    <string name="action_save_folder">Salva cartella</string>
+    <string name="title_folders">Cartelle</string>
+    <string name="action_open">Apri</string>
+    <string name="field_search">Cerca</string>
+    <string name="empty_videos">Nessun video. Tocca Aggiorna.</string>
+    <string name="download_status_fmt">Download: %1$s (%2$s/%3$s)</string>
+    <string name="unknown_value">?</string>
+    <string name="action_download">Scarica</string>
+    <string name="status_refreshing">Aggiornamento…</string>
+    <string name="status_saved_folder">Cartella salvata</string>
+
+    <string name="error_missing_account_video">Account/video mancante.</string>
+</resources>

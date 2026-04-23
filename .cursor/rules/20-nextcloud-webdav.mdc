@@ -1,0 +1,30 @@
+---
+description: Nextcloud WebDAV client rules (listing/streaming/download)
+globs: "app/src/main/java/**/NextcloudWebDavClient.kt"
+alwaysApply: false
+---
+
+# Nextcloud WebDAV (client)
+
+## Endpoint and auth
+
+- Use Nextcloud WebDAV endpoint: `/remote.php/dav/files/{USERNAME}/...`.
+- Authentication: **Basic Auth** with **app password** from Login Flow v2.
+
+## PROPFIND
+
+- Request only needed properties (e.g. `href`, `getcontenttype`, `getcontentlength`, `getlastmodified`, `getetag`) to keep payload small.
+- Use `Depth` intentionally:
+  - `Depth: 0` for folder metadata / connection checks
+  - `Depth: 1` for directory listing (recursive traversal is app-driven)
+
+## Parsing
+
+- XML parsing must be namespace-tolerant and robust to missing fields.
+- Normalize `href` consistently (encoding, leading/trailing slashes) before using it as a key.
+
+## Filters
+
+- Filter “video-only” by `getcontenttype` when present; fallback to file extension when missing.
+- Do not assume `getcontentlength` exists; treat as unknown size.
+
