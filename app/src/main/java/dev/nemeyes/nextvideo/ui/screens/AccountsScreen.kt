@@ -49,33 +49,35 @@ fun AccountsScreen(
                     Text(stringResource(R.string.empty_accounts), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             } else {
-                LazyColumn(
-                    state = listState,
-                    modifier = rootMod.fillMaxSize().padding(horizontal = 16.dp),
-                    contentPadding = PaddingValues(vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
-                ) {
-                    items(accounts.size) { idx ->
-                        val acc = accounts[idx]
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onOpenAccount(acc.id) }
-                                    .padding(vertical = 10.dp),
-                        ) {
-                            Text(acc.loginName)
-                            Text(acc.serverBaseUrl, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Box(modifier = rootMod.fillMaxSize()) {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                        contentPadding = PaddingValues(vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        items(accounts.size) { idx ->
+                            val acc = accounts[idx]
+                            Column(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .clickable { onOpenAccount(acc.id) }
+                                        .padding(vertical = 10.dp),
+                            ) {
+                                Text(acc.loginName)
+                                Text(acc.serverBaseUrl, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
                     }
-                }
 
-                FastScrollBar(
-                    state = listState,
-                    totalItems = accounts.size,
-                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 6.dp),
-                    thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
-                )
+                    FastScrollBar(
+                        state = listState,
+                        totalItems = accounts.size,
+                        modifier = Modifier.align(Alignment.CenterEnd).padding(end = 6.dp),
+                        thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
+                    )
+                }
             }
     }
 
