@@ -35,35 +35,15 @@ fun AccountsScreen(
     accountRepository: AccountRepository,
     onAddAccount: () -> Unit,
     onOpenAccount: (accountId: String) -> Unit,
+    showAppBar: Boolean = true,
 ) {
     val accounts by accountRepository.observeAll().collectAsState(initial = emptyList())
     val listState = rememberLazyListState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.title_accounts)) },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
-                actions = {
-                    FilledTonalButton(
-                        onClick = onAddAccount,
-                        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
-                    ) {
-                        Text(stringResource(R.string.action_add))
-                    }
-                },
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background,
-    ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+    val content: @Composable (Modifier) -> Unit = { rootMod ->
             if (accounts.isEmpty()) {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                    modifier = rootMod.fillMaxSize().padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Text(stringResource(R.string.empty_accounts), color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -71,7 +51,7 @@ fun AccountsScreen(
             } else {
                 LazyColumn(
                     state = listState,
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                    modifier = rootMod.fillMaxSize().padding(horizontal = 16.dp),
                     contentPadding = PaddingValues(vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
@@ -97,7 +77,35 @@ fun AccountsScreen(
                     thumbColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
                 )
             }
-        }
+    }
+
+    if (!showAppBar) {
+        Box(modifier = Modifier.fillMaxSize()) { content(Modifier) }
+        return
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.title_accounts)) },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                actions = {
+                    FilledTonalButton(
+                        onClick = onAddAccount,
+                        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+                    ) {
+                        Text(stringResource(R.string.action_add))
+                    }
+                },
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { padding ->
+        Box(modifier = Modifier.fillMaxSize().padding(padding)) { content(Modifier) }
     }
 }
 
