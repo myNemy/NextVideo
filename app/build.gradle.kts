@@ -9,6 +9,15 @@ android {
     namespace = "dev.nemeyes.nextvideo"
     compileSdk = 35
 
+    signingConfigs {
+        create("debugStable") {
+            storeFile = rootProject.file("keystore/nextvideo-debug.jks")
+            storePassword = "nextvideo"
+            keyAlias = "nextvideo-debug"
+            keyPassword = "nextvideo"
+        }
+    }
+
     defaultConfig {
         applicationId = "dev.nemeyes.nextvideo"
         minSdk = 26
@@ -23,6 +32,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debugStable")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
