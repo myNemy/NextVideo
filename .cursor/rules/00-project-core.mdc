@@ -29,3 +29,12 @@ alwaysApply: true
 - Default to **HTTPS** (no cleartext by default).
 - Offline downloads must be stored in **app-private storage** unless user explicitly exports.
 
+## Documentation (always required)
+
+- When unsure about APIs, behavior, permissions, or best practices, consult the **official documentation** before implementing or changing code.
+- Prefer these sources of truth:
+  - Android / Jetpack / Gradle: official Android Developers + Gradle docs
+  - Kotlin: official Kotlin docs
+  - Nextcloud/WebDAV/Login flow: official Nextcloud docs/specs
+  - CI: official GitLab CI and GitHub Actions docs
+

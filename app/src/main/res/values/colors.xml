@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nc_primary">#FF0082C9</color>
+    <color name="ic_launcher_background">@color/nc_primary</color>
+</resources>
+

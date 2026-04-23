@@ -3,10 +3,10 @@ package dev.nemeyes.nextvideo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,13 +19,14 @@ import dev.nemeyes.nextvideo.ui.screens.AccountsScreen
 import dev.nemeyes.nextvideo.ui.screens.AddAccountScreen
 import dev.nemeyes.nextvideo.ui.screens.LibraryScreen
 import dev.nemeyes.nextvideo.ui.screens.PlayerScreen
+import dev.nemeyes.nextvideo.ui.theme.NextVideoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
-                Surface {
+            NextVideoTheme {
+                Surface(color = Color.Transparent) {
                     NextVideoApp()
                 }
             }

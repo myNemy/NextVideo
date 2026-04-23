@@ -7,9 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +30,7 @@ import dev.nemeyes.nextvideo.data.accounts.AccountRepository
 import dev.nemeyes.nextvideo.nextcloud.loginv2.LoginV2Api
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddAccountScreen(
     loginV2Api: LoginV2Api,
@@ -38,54 +44,71 @@ fun AddAccountScreen(
     var status by remember { mutableStateOf("") }
     var isBusy by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(stringResource(R.string.title_add_account))
-        TextField(
-            value = serverUrl,
-            onValueChange = { serverUrl = it },
-            label = { Text(stringResource(R.string.field_server_base_url)) },
-        )
-
-        Button(
-            enabled = !isBusy,
-            contentPadding = PaddingValues(horizontal = 18.dp, vertical = 12.dp),
-            onClick = {
-                scope.launch {
-                    try {
-                        isBusy = true
-                        status = context.getString(R.string.status_starting_login)
-                        val start = loginV2Api.start(serverUrl)
-                        status = context.getString(R.string.status_open_browser_approve)
-                        CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(start.loginUrl))
-                        val result = loginV2Api.pollUntilApproved(start.pollUrl, start.token)
-                        status = context.getString(R.string.status_saving_account)
-                        val accountId =
-                            accountRepository.addAccount(
-                                serverBaseUrl = result.server,
-                                loginName = result.loginName,
-                                appPassword = result.appPassword,
-                            )
-                        status = context.getString(R.string.status_done)
-                        onDone(accountId)
-                    } catch (t: Throwable) {
-                        status =
-                            context.getString(
-                                R.string.status_error_fmt,
-                                t.message ?: t.javaClass.simpleName,
-                            )
-                    } finally {
-                        isBusy = false
-                    }
-                }
-            },
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.title_add_account)) },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { padding ->
+        Column(
+            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(stringResource(R.string.action_login))
-        }
+            TextField(
+                value = serverUrl,
+                onValueChange = { serverUrl = it },
+                label = { Text(stringResource(R.string.field_server_base_url)) },
+            )
 
-        Text(status)
+            Button(
+                enabled = !isBusy,
+                contentPadding = PaddingValues(horizontal = 18.dp, vertical = 12.dp),
+                onClick = {
+                    scope.launch {
+                        try {
+                            isBusy = true
+                            status = context.getString(R.string.status_starting_login)
+                            val start = loginV2Api.start(serverUrl)
+                            status = context.getString(R.string.status_open_browser_approve)
+                            CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(start.loginUrl))
+                            val result = loginV2Api.pollUntilApproved(start.pollUrl, start.token)
+                            status = context.getString(R.string.status_saving_account)
+                            val accountId =
+                                accountRepository.addAccount(
+                                    serverBaseUrl = result.server,
+                                    loginName = result.loginName,
+                                    appPassword = result.appPassword,
+                                )
+                            status = context.getString(R.string.status_done)
+                            onDone(accountId)
+                        } catch (t: Throwable) {
+                            status =
+                                context.getString(
+                                    R.string.status_error_fmt,
+                                    t.message ?: t.javaClass.simpleName,
+                                )
+                        } finally {
+                            isBusy = false
+                        }
+                    }
+                },
+            ) {
+                Text(stringResource(R.string.action_login))
+            }
+
+            if (status.isNotBlank()) {
+                Text(status, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
     }
 }
 
