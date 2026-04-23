@@ -1,3 +1,8 @@
+---
+description: Changelog Fastlane (F-Droid/store metadata)
+alwaysApply: true
+---
+
 # Changelog (Fastlane / store metadata)
 
 This project should track release notes in Fastlane-style metadata:

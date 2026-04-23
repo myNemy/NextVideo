@@ -1,3 +1,8 @@
+---
+description: Agent MUST bump version + changelog before commit/push of app changes; new release/tag per bumped versionName
+alwaysApply: true
+---
+
 # Commit, push, release automation
 
 ## Product goal
@@ -23,10 +28,11 @@ Version bump required when the diff touches e.g.:
 
 Not required when changes are only docs/repo metadata with no APK impact.
 
-## Dual remote
+## Three remotes
 
-After the commit, push to both remotes:
+After the commit, push to all three remotes:
 
+- `git push gitlab <branch>`
+- `git push github <branch>`
 - `git push forgejo <branch>`
-- `git push origin <branch>`
 

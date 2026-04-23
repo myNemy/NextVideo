@@ -1,3 +1,8 @@
+---
+description: Versione app (versionCode/versionName) per release/tag
+alwaysApply: true
+---
+
 # App version (`versionCode` / `versionName`)
 
 ## Goal

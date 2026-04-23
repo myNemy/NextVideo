@@ -1,14 +1,20 @@
+---
+description: Convenzioni commit (inglese) + tre remotes
+alwaysApply: true
+---
+
 # Git commits
 
 - All commit messages (subject + optional body) must be written in **English**.
 - Prefer imperative, clear subjects (e.g. `feat:`, `fix:`, `docs:`).
 
-## Dual remote (required when publishing)
+## Three remotes (required when publishing)
 
-This repo is expected to have **two remotes**:
+This repo is expected to have **three remotes**:
 
-1. `git push forgejo <branch>`
-2. `git push origin <branch>`
+1. `git push gitlab <branch>`
+2. `git push github <branch>`
+3. `git push forgejo <branch>`
 
-Do not consider work “published” until both pushes succeed, unless explicitly instructed otherwise.
+Do not consider work “published” until all three pushes succeed, unless explicitly instructed otherwise.
 
