@@ -15,10 +15,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.nemeyes.nextvideo.data.accounts.AccountRepository
 import dev.nemeyes.nextvideo.ui.NavRoutes
-import dev.nemeyes.nextvideo.ui.screens.AccountsScreen
 import dev.nemeyes.nextvideo.ui.screens.AddAccountScreen
-import dev.nemeyes.nextvideo.ui.screens.LibraryScreen
 import dev.nemeyes.nextvideo.ui.screens.PlayerScreen
+import dev.nemeyes.nextvideo.ui.main.MainTabsScreen
 import dev.nemeyes.nextvideo.ui.theme.NextVideoTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,12 +39,28 @@ private fun NextVideoApp() {
     val container = remember { AppContainer(nav.context.applicationContext) }
     val accountRepository = remember { AccountRepository(container.db.accountDao(), container.secrets) }
 
-    NavHost(navController = nav, startDestination = NavRoutes.Accounts) {
-        composable(NavRoutes.Accounts) {
-            AccountsScreen(
+    NavHost(navController = nav, startDestination = NavRoutes.MainTabs) {
+        composable(
+            route = "${NavRoutes.MainTabs}?accountId={accountId}",
+            arguments =
+                listOf(
+                    navArgument("accountId") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    },
+                ),
+        ) { backStack ->
+            val accountId = backStack.arguments?.getString("accountId")
+            MainTabsScreen(
                 accountRepository = accountRepository,
+                db = container.db,
+                libraryRepository = container.libraryRepository,
+                downloadRepository = container.downloadRepository,
+                initialAccountId = accountId,
                 onAddAccount = { nav.navigate(NavRoutes.AddAccount) },
-                onOpenAccount = { accountId -> nav.navigate(NavRoutes.library(accountId)) },
+                onSaveFolderHref = { id, href -> accountRepository.setLibraryFolderHref(id, href) },
+                onOpenVideo = { id, videoId -> nav.navigate(NavRoutes.player(id, videoId)) },
             )
         }
 
@@ -53,22 +68,11 @@ private fun NextVideoApp() {
             AddAccountScreen(
                 loginV2Api = container.loginV2Api,
                 accountRepository = accountRepository,
-                onDone = { accountId -> nav.navigate(NavRoutes.library(accountId)) },
-            )
-        }
-
-        composable(
-            route = "${NavRoutes.Library}/{accountId}",
-            arguments = listOf(navArgument("accountId") { type = NavType.StringType }),
-        ) { backStack ->
-            val accountId = backStack.arguments?.getString("accountId").orEmpty()
-            LibraryScreen(
-                accountId = accountId,
-                db = container.db,
-                libraryRepository = container.libraryRepository,
-                downloadRepository = container.downloadRepository,
-                onSaveFolderHref = { href -> accountRepository.setLibraryFolderHref(accountId, href) },
-                onOpenVideo = { videoId -> nav.navigate(NavRoutes.player(accountId, videoId)) },
+                onDone = { accountId ->
+                    nav.navigate(NavRoutes.mainTabs(accountId)) {
+                        popUpTo(NavRoutes.MainTabs) { inclusive = true }
+                    }
+                },
             )
         }
 

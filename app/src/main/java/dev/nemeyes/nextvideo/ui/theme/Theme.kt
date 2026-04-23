@@ -13,6 +13,14 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/** Parses Nextcloud OCS theming hex (`#0082c9` or `0082c9`). */
+fun parseThemingHexToColor(hex: String?): Color? {
+    if (hex.isNullOrBlank()) return null
+    val t = hex.trim()
+    val normalized = if (t.startsWith("#")) t else "#$t"
+    return runCatching { Color(android.graphics.Color.parseColor(normalized)) }.getOrNull()
+}
+
 private val FallbackLight =
     lightColorScheme(
         primary = NcBlue,
@@ -66,9 +74,25 @@ private val FallbackDark =
 @Composable
 fun NextVideoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    /** OCS `theming.color` from the active instance; null → default Nextcloud blue. */
+    instancePrimaryHex: String? = null,
+    /** OCS `theming.color-text` for icons/text on primary (e.g. top app bar). */
+    instanceOnPrimaryHex: String? = null,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = remember(darkTheme) { if (darkTheme) FallbackDark else FallbackLight }
+    val seedPrimary = remember(instancePrimaryHex) { parseThemingHexToColor(instancePrimaryHex) ?: NcBlue }
+    val onPrimaryOverride = remember(instanceOnPrimaryHex) { parseThemingHexToColor(instanceOnPrimaryHex) }
+    val colorScheme =
+        remember(seedPrimary, darkTheme, onPrimaryOverride) {
+            val base = if (darkTheme) FallbackDark else FallbackLight
+            val onPrimary =
+                onPrimaryOverride
+                    ?: if (seedPrimary.luminance() > 0.5f) Color(0xFF1A1C1E) else Color.White
+            base.copy(
+                primary = seedPrimary,
+                onPrimary = onPrimary,
+            )
+        }
     val view = LocalView.current
     val primaryLuminance = colorScheme.primary.luminance()
 
