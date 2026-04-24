@@ -41,6 +41,8 @@ import dev.nemeyes.nextvideo.ui.screens.InfoScreen
 import dev.nemeyes.nextvideo.ui.screens.LibraryScreen
 import dev.nemeyes.nextvideo.ui.screens.SettingsScreen
 import dev.nemeyes.nextvideo.ui.theme.ncAppBarTopColors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private enum class MainTab(
     val labelRes: Int,
@@ -75,9 +77,12 @@ fun MainTabsScreen(
             onThemingChanged(null)
             return@LaunchedEffect
         }
-
-        val acc = db.accountDao().getById(id)
-        val theming = acc?.let { ThemingApi.fetch(it.serverBaseUrl) }
+        // Room + OCS on IO only — network must not run on the main thread (crash: NetworkOnMainThreadException).
+        val theming =
+            withContext(Dispatchers.IO) {
+                val acc = db.accountDao().getById(id) ?: return@withContext null
+                ThemingApi.fetchOrNull(acc.serverBaseUrl)
+            }
         onThemingChanged(theming)
     }
 

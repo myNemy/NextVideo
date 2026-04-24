@@ -25,13 +25,21 @@ class AccountRepository(
         appPassword: String,
     ): String {
         val now = System.currentTimeMillis()
+        val server = serverBaseUrl.trimEnd('/')
+        val login = loginName.trim()
+        val existing = accountDao.getByServerAndLogin(server, login)
+        if (existing != null) {
+            accountDao.update(existing.copy(lastUsedAtEpochMs = now))
+            secrets.putAppPassword(existing.id, appPassword)
+            return existing.id
+        }
         val id = UUID.randomUUID().toString()
-        val libraryHref = "/remote.php/dav/files/${loginName.trim()}/"
+        val libraryHref = "/remote.php/dav/files/$login/"
         val entity =
             AccountEntity(
                 id = id,
-                serverBaseUrl = serverBaseUrl.trimEnd('/'),
-                loginName = loginName,
+                serverBaseUrl = server,
+                loginName = login,
                 libraryFolderHref = libraryHref,
                 createdAtEpochMs = now,
                 lastUsedAtEpochMs = now,

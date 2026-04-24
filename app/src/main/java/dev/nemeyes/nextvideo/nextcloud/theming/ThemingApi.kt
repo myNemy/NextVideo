@@ -1,6 +1,8 @@
 package dev.nemeyes.nextvideo.nextcloud.theming
 
 import dev.nemeyes.nextvideo.core.http.OkHttpProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.Request
 import org.json.JSONObject
 
@@ -14,10 +16,14 @@ data class InstanceTheming(
 object ThemingApi {
     /**
      * Fetch instance theming colors (primary + text-on-primary) using Nextcloud OCS theming endpoint.
+     * Safe to call from a coroutine; network runs on an I/O dispatcher.
      *
      * This endpoint is typically public and does not require auth.
      */
-    fun fetch(serverBaseUrl: String): InstanceTheming? {
+    suspend fun fetchOrNull(serverBaseUrl: String): InstanceTheming? =
+        withContext(Dispatchers.IO) { runCatching { fetchBlocking(serverBaseUrl) }.getOrNull() }
+
+    private fun fetchBlocking(serverBaseUrl: String): InstanceTheming? {
         val url =
             serverBaseUrl.trimEnd('/') +
                 "/ocs/v2.php/apps/theming/api/v1/theme?format=json"
@@ -36,14 +42,14 @@ object ThemingApi {
             val ocs = root.optJSONObject("ocs") ?: return null
             val data = ocs.optJSONObject("data") ?: return null
 
-            val primary = data.optString("color", null)
-            // Nextcloud theming uses "color-text" (sometimes available as "colorText" in some clients)
-            val onPrimary = data.optString("color-text", null).ifBlank { null }
-                ?: data.optString("colorText", null).ifBlank { null }
-            val instanceName = data.optString("name", "").trim().ifBlank { null }
+            val primary = data.optString("color").ifBlank { null }
+            // Nextcloud theming uses "color-text" (sometimes "colorText")
+            val onPrimary = data.optString("color-text").ifBlank { null }
+                ?: data.optString("colorText").ifBlank { null }
+            val instanceName = data.optString("name").trim().ifBlank { null }
 
             return InstanceTheming(
-                primaryHex = primary?.takeIf { it.isNotBlank() },
+                primaryHex = primary,
                 onPrimaryHex = onPrimary,
                 instanceName = instanceName,
             )

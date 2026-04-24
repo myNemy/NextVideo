@@ -3,6 +3,7 @@ package dev.nemeyes.nextvideo.core.http
 import android.content.Context
 import dev.nemeyes.nextvideo.R
 import dev.nemeyes.nextvideo.nextcloud.webdav.WebDavHttpException
+import org.json.JSONException
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -18,6 +19,7 @@ object NetworkErrorMapper {
         val root = rootCause(t)
         return when (root) {
             is WebDavHttpException -> messageForWebDavHttp(context, root.httpCode)
+            is JSONException -> context.getString(R.string.error_login_response)
             is UnknownHostException -> context.getString(R.string.error_network_unknown_host)
             is SocketTimeoutException -> context.getString(R.string.error_network_timeout)
             is ConnectException -> context.getString(R.string.error_network_connect)

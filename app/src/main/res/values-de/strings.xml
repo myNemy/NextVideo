@@ -25,6 +25,7 @@
     <string name="status_saving_account">Saving account…</string>
     <string name="status_done">Done</string>
     <string name="status_error_fmt">Error: %1$s</string>
+    <string name="error_login_response">The server sent an unexpected response during sign-in. Try again or check your server URL.</string>
     <string name="error_network_timeout">The server took too long to respond. Check your connection and try again.</string>
     <string name="error_network_connect">Could not reach the server. Check the address and your network.</string>
     <string name="error_network_unknown_host">The server name could not be resolved. Check the URL.</string>
@@ -59,8 +60,13 @@
     <string name="tab_info">Info</string>
     <string name="library_select_account_hint">Select an account in Home to open the library.</string>
     <string name="title_settings">Settings</string>
+    <string name="settings_section_app">App</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_appearance">Look and colors</string>
+    <string name="settings_theme_description">With an account selected, the accent color follows your Nextcloud server (OCS Theming) when the server provides it. The top bar uses a light layout similar to the official Nextcloud app.</string>
     <string name="title_info">Info</string>
-    <string name="coming_soon">Coming soon.</string>
+    <string name="coming_soon">More settings (downloads, media) will be added in a later release.</string>
     <string name="info_app_title">NextVideo</string>
     <string name="info_app_subtitle">Unofficial Nextcloud video client.</string>
     <string name="info_instance_name">Instanz: %1$s</string>

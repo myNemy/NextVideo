@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -92,6 +93,13 @@ fun AccountsScreen(
                         val goAccount = { onOpenAccount(acc.id) }
                         ListItem(
                             modifier = Modifier.fillMaxWidth(),
+                            leadingContent = {
+                                Icon(
+                                    Icons.Outlined.AccountCircle,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                            },
                             headlineContent = {
                                 Text(
                                     acc.loginName,

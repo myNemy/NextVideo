@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONException
 import org.json.JSONObject
 
 data class LoginV2Start(
@@ -35,14 +36,29 @@ class LoginV2Api(
             http.newCall(req).execute().use { resp ->
                 check(resp.isSuccessful) { "Login v2 start failed: HTTP ${resp.code}" }
                 val body = resp.body?.string().orEmpty()
-                val json = JSONObject(body)
-                val login = json.getString("login")
-                val poll = json.getJSONObject("poll")
-                LoginV2Start(
-                    loginUrl = login,
-                    pollUrl = poll.getString("endpoint"),
-                    token = poll.getString("token"),
-                )
+                val json =
+                    try {
+                        JSONObject(body)
+                    } catch (_: JSONException) {
+                        error("Login v2: invalid response from server")
+                    }
+                val login = json.optString("login", "")
+                val poll = json.optJSONObject("poll")
+                if (login.isNotBlank() && poll != null) {
+                    val endpoint = poll.optString("endpoint", "")
+                    val token = poll.optString("token", "")
+                    if (endpoint.isNotEmpty() && token.isNotEmpty()) {
+                        LoginV2Start(
+                            loginUrl = login,
+                            pollUrl = endpoint,
+                            token = token,
+                        )
+                    } else {
+                        error("Login v2: missing poll token or endpoint")
+                    }
+                } else {
+                    error("Login v2: unexpected start response from server")
+                }
             }
         }
 
@@ -68,15 +84,22 @@ class LoginV2Api(
                         // Other errors are likely transient; keep polling a bit.
                     } else {
                         val text = resp.body?.string().orEmpty()
-                        val json = JSONObject(text)
-                        val server = json.getString("server")
-                        val loginName = json.getString("loginName")
-                        val appPassword = json.getString("appPassword")
-                        return@withContext LoginV2PollResult(
-                            server = server.trimEnd('/'),
-                            loginName = loginName,
-                            appPassword = appPassword,
-                        )
+                        val json =
+                            try {
+                                JSONObject(text)
+                            } catch (_: JSONException) {
+                                return@use
+                            }
+                        val server = json.optString("server", "").trim()
+                        val loginName = json.optString("loginName", "").trim()
+                        val appPassword = json.optString("appPassword", "")
+                        if (server.isNotEmpty() && loginName.isNotEmpty() && appPassword.isNotEmpty()) {
+                            return@withContext LoginV2PollResult(
+                                server = server.trimEnd('/'),
+                                loginName = loginName,
+                                appPassword = appPassword,
+                            )
+                        }
                     }
                 }
 

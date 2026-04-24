@@ -27,6 +27,7 @@
     <string name="status_saving_account">Salvataggio account…</string>
     <string name="status_done">Fatto</string>
     <string name="status_error_fmt">Errore: %1$s</string>
+    <string name="error_login_response">Il server ha risposto in modo imprevisto durante l’accesso. Riprova o controlla l’URL del server.</string>
 
     <string name="error_network_timeout">Il server ha impiegato troppo tempo a rispondere. Controlla la connessione e riprova.</string>
     <string name="error_network_connect">Impossibile contattare il server. Controlla indirizzo e rete.</string>
@@ -66,8 +67,13 @@
     <string name="library_select_account_hint">Seleziona un account in Inizio per aprire la libreria.</string>
 
     <string name="title_settings">Impostazioni</string>
+    <string name="settings_section_app">App</string>
+    <string name="settings_version">Versione</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_appearance">Aspetto e colori</string>
+    <string name="settings_theme_description">Con un account selezionato, il colore di accento segue il server Nextcloud (OCS Theming) quando il server lo fornisce. La barra in alto segue un layout chiaro simile all’app Nextcloud ufficiale.</string>
     <string name="title_info">Info</string>
-    <string name="coming_soon">Prossimamente.</string>
+    <string name="coming_soon">Altre impostazioni (download, riproduzione) arriveranno in un aggiornamento futuro.</string>
     <string name="info_app_title">NextVideo</string>
     <string name="info_app_subtitle">Client non ufficiale per video Nextcloud.</string>
     <string name="info_instance_name">Istanza: %1$s</string>

@@ -1,0 +1,4 @@
+- Fix: Crash when selecting an account (OCS theming and Room must not run on the main thread).
+- Fix: Login v2 and poll use safer JSON handling; re-adding the same account updates the stored password.
+- Add: Real Settings screen: app version, appearance / theme description.
+- Add: Account list rows show a Nextcloud-style account icon.
