@@ -1,5 +1,6 @@
 package dev.nemeyes.nextvideo.ui.theme
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
  * look: `appbar` = white, `text_color` / `fontAppbar`-style title and icons — not a solid primary bar.
  * Uses [androidx.compose.material3.ColorScheme] in dark theme so text stays readable.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ncAppBarTopColors() =
     TopAppBarDefaults.topAppBarColors(
