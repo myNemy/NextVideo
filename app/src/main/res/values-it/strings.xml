@@ -5,6 +5,19 @@
     <string name="title_accounts">Account</string>
     <string name="action_add">Aggiungi</string>
     <string name="empty_accounts">Nessun account. Aggiungine uno per iniziare.</string>
+    <string name="action_save">Salva</string>
+    <string name="action_cancel">Annulla</string>
+    <string name="action_edit">Modifica</string>
+    <string name="action_remove">Rimuovi</string>
+    <string name="content_desc_account_options">Opzioni account</string>
+    <string name="account_menu_edit">Modifica</string>
+    <string name="account_menu_remove">Rimuovi</string>
+    <string name="account_delete_title">Rimuovere questo account?</string>
+    <string name="account_delete_message">L’account, la libreria in cache, le posizioni di riproduzione e i download locali per questo account verranno rimossi da questo dispositivo. L’operazione non può essere annullata.</string>
+    <string name="account_edit_title">Modifica account</string>
+    <string name="account_edit_server">Server</string>
+    <string name="account_edit_login">Accesso</string>
+    <string name="field_new_app_password_optional">Nuova password app (opzionale)</string>
 
     <string name="title_add_account">Aggiungi account (Nextcloud Login v2)</string>
     <string name="field_server_base_url">URL base del server</string>
@@ -15,6 +28,18 @@
     <string name="status_done">Fatto</string>
     <string name="status_error_fmt">Errore: %1$s</string>
 
+    <string name="error_network_timeout">Il server ha impiegato troppo tempo a rispondere. Controlla la connessione e riprova.</string>
+    <string name="error_network_connect">Impossibile contattare il server. Controlla indirizzo e rete.</string>
+    <string name="error_network_unknown_host">Il nome del server non è risolvibile. Controlla l\'URL.</string>
+    <string name="error_network_ssl">Impossibile stabilire una connessione sicura (SSL/TLS). Se persiste, contatta l\'amministratore.</string>
+    <string name="error_network_io">Errore di rete. Riprova.</string>
+    <string name="error_http_unauthorized">Accesso negato. Accedi di nuovo (password o app password non valida o scaduta).</string>
+    <string name="error_http_forbidden">Non hai il permesso per questa posizione.</string>
+    <string name="error_http_not_found">Cartella o file non trovato (404).</string>
+    <string name="error_http_server">Problema sul server. Riprova più tardi.</string>
+    <string name="error_http_status">Il server ha risposto con HTTP %1$d.</string>
+    <string name="error_generic">Qualcosa è andato storto (%1$s).</string>
+
     <string name="title_library">Libreria</string>
     <string name="error_account_not_found">Account non trovato.</string>
     <string name="action_refresh">Aggiorna</string>
@@ -24,6 +49,7 @@
     <string name="action_open">Apri</string>
     <string name="field_search">Cerca</string>
     <string name="empty_videos">Nessun video. Tocca Aggiorna.</string>
+    <string name="library_video_subtitle">%1$s · %2$s</string>
     <string name="download_status_fmt">Download: %1$s (%2$s/%3$s)</string>
     <string name="unknown_value">?</string>
     <string name="action_download">Scarica</string>
@@ -31,6 +57,7 @@
     <string name="status_saved_folder">Cartella salvata</string>
 
     <string name="error_missing_account_video">Account/video mancante.</string>
+    <string name="content_desc_back">Indietro</string>
 
     <string name="tab_home">Inizio</string>
     <string name="tab_library">Libreria</string>
@@ -43,4 +70,5 @@
     <string name="coming_soon">Prossimamente.</string>
     <string name="info_app_title">NextVideo</string>
     <string name="info_app_subtitle">Client non ufficiale per video Nextcloud.</string>
+    <string name="info_instance_name">Istanza: %1$s</string>
 </resources>

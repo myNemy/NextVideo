@@ -37,7 +37,14 @@ class MainActivity : ComponentActivity() {
 private fun NextVideoApp() {
     val nav = rememberNavController()
     val container = remember { AppContainer(nav.context.applicationContext) }
-    val accountRepository = remember { AccountRepository(container.db.accountDao(), container.secrets) }
+    val accountRepository =
+        remember {
+            AccountRepository(
+                context = nav.context.applicationContext,
+                db = container.db,
+                secrets = container.secrets,
+            )
+        }
     var theming by remember { mutableStateOf<InstanceTheming?>(null) }
 
     NextVideoTheme(
@@ -64,6 +71,7 @@ private fun NextVideoApp() {
                         libraryRepository = container.libraryRepository,
                         downloadRepository = container.downloadRepository,
                         initialAccountId = accountId,
+                        instanceTheming = theming,
                         onAddAccount = { nav.navigate(NavRoutes.AddAccount) },
                         onSaveFolderHref = { id, href -> accountRepository.setLibraryFolderHref(id, href) },
                         onOpenVideo = { id, videoId -> nav.navigate(NavRoutes.player(id, videoId)) },
@@ -98,6 +106,7 @@ private fun NextVideoApp() {
                         videoId = videoId,
                         db = container.db,
                         secrets = container.secrets,
+                        onNavigateUp = { nav.popBackStack() },
                     )
                 }
             }

@@ -1,0 +1,1 @@
+- Add: Show the connected Nextcloud instance name on the Info screen (from OCS Theming when available).

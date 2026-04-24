@@ -2,24 +2,23 @@ package dev.nemeyes.nextvideo.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,6 +40,7 @@ import dev.nemeyes.nextvideo.ui.screens.AccountsScreen
 import dev.nemeyes.nextvideo.ui.screens.InfoScreen
 import dev.nemeyes.nextvideo.ui.screens.LibraryScreen
 import dev.nemeyes.nextvideo.ui.screens.SettingsScreen
+import dev.nemeyes.nextvideo.ui.theme.ncAppBarTopColors
 
 private enum class MainTab(
     val labelRes: Int,
@@ -60,6 +60,7 @@ fun MainTabsScreen(
     libraryRepository: LibraryRepository,
     downloadRepository: DownloadRepository,
     initialAccountId: String? = null,
+    instanceTheming: InstanceTheming? = null,
     onAddAccount: () -> Unit,
     onOpenVideo: (accountId: String, videoId: String) -> Unit,
     onSaveFolderHref: suspend (accountId: String, href: String) -> Unit,
@@ -81,13 +82,6 @@ fun MainTabsScreen(
     }
 
     val currentTab = MainTab.entries[selectedTab]
-    val topBarColors =
-        TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        )
 
     Scaffold(
         topBar = {
@@ -104,15 +98,18 @@ fun MainTabsScreen(
                 },
                 actions = {
                     if (currentTab == MainTab.Home) {
-                        FilledTonalButton(
+                        IconButton(
                             onClick = onAddAccount,
-                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
                         ) {
-                            Text(stringResource(R.string.action_add))
+                            Icon(
+                                imageVector = Icons.Outlined.Add,
+                                contentDescription = stringResource(R.string.action_add),
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
                         }
                     }
                 },
-                colors = topBarColors,
+                colors = ncAppBarTopColors(),
             )
         },
         bottomBar = {
@@ -147,6 +144,12 @@ fun MainTabsScreen(
                             selectedAccountId = id
                             selectedTab = MainTab.Library.ordinal
                         },
+                        onAccountRemoved = { id ->
+                            if (selectedAccountId == id) {
+                                selectedAccountId = null
+                                onThemingChanged(null)
+                            }
+                        },
                     )
                 }
                 MainTab.Library -> {
@@ -170,7 +173,7 @@ fun MainTabsScreen(
                     }
                 }
                 MainTab.Settings -> SettingsScreen()
-                MainTab.Info -> InfoScreen()
+                MainTab.Info -> InfoScreen(instanceName = instanceTheming?.instanceName)
             }
         }
     }

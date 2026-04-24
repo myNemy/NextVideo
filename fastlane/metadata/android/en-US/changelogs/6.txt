@@ -1,0 +1,3 @@
+- Add: Remove account (with confirmation), clearing local cache, downloads, and stored credentials for that account.
+- Add: Edit account from the list menu — change library folder path and optionally update the app password.
+- Add: Account row menu (⋮) to open these actions.

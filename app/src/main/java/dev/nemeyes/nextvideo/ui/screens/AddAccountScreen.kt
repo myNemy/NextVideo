@@ -14,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +25,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.nemeyes.nextvideo.R
+import dev.nemeyes.nextvideo.core.http.NetworkErrorMapper
 import dev.nemeyes.nextvideo.data.accounts.AccountRepository
 import dev.nemeyes.nextvideo.nextcloud.loginv2.LoginV2Api
+import dev.nemeyes.nextvideo.ui.theme.ncAppBarTopColors
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,13 +49,7 @@ fun AddAccountScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.title_add_account)) },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
+                colors = ncAppBarTopColors(),
             )
         },
         containerColor = MaterialTheme.colorScheme.background,
@@ -94,7 +89,7 @@ fun AddAccountScreen(
                             status =
                                 context.getString(
                                     R.string.status_error_fmt,
-                                    t.message ?: t.javaClass.simpleName,
+                                    NetworkErrorMapper.userMessage(context, t),
                                 )
                         } finally {
                             isBusy = false

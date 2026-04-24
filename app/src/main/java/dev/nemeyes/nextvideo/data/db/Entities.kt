@@ -68,3 +68,15 @@ data class DownloadEntity(
     val updatedAtEpochMs: Long,
 )
 
+@Entity(
+    tableName = "playback_positions",
+    primaryKeys = ["accountId", "videoId"],
+)
+data class PlaybackPositionEntity(
+    val accountId: String,
+    val videoId: String,
+    /** ExoPlayer playback position in milliseconds. */
+    val positionMs: Long,
+    val updatedAtEpochMs: Long,
+)
+

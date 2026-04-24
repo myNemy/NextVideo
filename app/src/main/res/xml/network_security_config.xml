@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Default: HTTPS only (matches project rule: no cleartext by default). For a pure HTTP test server, add a debug-only <domain-config>. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

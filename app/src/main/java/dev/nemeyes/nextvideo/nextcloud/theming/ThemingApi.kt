@@ -7,6 +7,8 @@ import org.json.JSONObject
 data class InstanceTheming(
     val primaryHex: String?,
     val onPrimaryHex: String?,
+    /** OCS `name` (Nextcloud theming) — the instance display name, when returned. */
+    val instanceName: String? = null,
 )
 
 object ThemingApi {
@@ -38,10 +40,12 @@ object ThemingApi {
             // Nextcloud theming uses "color-text" (sometimes available as "colorText" in some clients)
             val onPrimary = data.optString("color-text", null).ifBlank { null }
                 ?: data.optString("colorText", null).ifBlank { null }
+            val instanceName = data.optString("name", "").trim().ifBlank { null }
 
             return InstanceTheming(
                 primaryHex = primary?.takeIf { it.isNotBlank() },
                 onPrimaryHex = onPrimary,
+                instanceName = instanceName,
             )
         }
     }

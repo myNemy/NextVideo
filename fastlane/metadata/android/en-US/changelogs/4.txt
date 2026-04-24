@@ -1,0 +1,3 @@
+- Add: Pull-to-refresh for the video library (same as the Refresh button).
+- Add: Show file size and MIME type on each video row.
+- Change: Use Material list items for a clearer video list layout.

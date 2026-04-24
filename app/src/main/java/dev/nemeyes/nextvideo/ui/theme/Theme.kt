@@ -94,12 +94,12 @@ fun NextVideoTheme(
             )
         }
     val view = LocalView.current
-    val primaryLuminance = colorScheme.primary.luminance()
-
     SideEffect {
         val window = (view.context as? Activity)?.window ?: return@SideEffect
+        // Match light Nextcloud app chrome: white app/navigation bar with dark system bar icons, not
+        // tied to the instance primary color used in the toolbar in older "primary-filled" UIs.
         WindowCompat.getInsetsController(window, view).apply {
-            isAppearanceLightStatusBars = primaryLuminance > 0.5f
+            isAppearanceLightStatusBars = !darkTheme
             isAppearanceLightNavigationBars = !darkTheme
         }
     }

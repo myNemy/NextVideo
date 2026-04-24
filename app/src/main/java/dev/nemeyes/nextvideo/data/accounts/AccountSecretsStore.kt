@@ -13,6 +13,10 @@ class AccountSecretsStore(context: Context) {
 
     fun getAppPassword(accountId: String): String? = prefs.getString(keyAppPassword(accountId), null)
 
+    fun removeAppPassword(accountId: String) {
+        prefs.edit().remove(keyAppPassword(accountId)).apply()
+    }
+
     fun buildBasicAuthHeader(accountId: String, loginName: String): String? {
         val appPassword = getAppPassword(accountId) ?: return null
         val userPass = "$loginName:$appPassword"

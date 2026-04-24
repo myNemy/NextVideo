@@ -1,0 +1,1 @@
+- Add: WebDAV PROPFIND (library refresh) retries a few times with backoff on transient errors (I/O, 429, 5xx, 408, 504).

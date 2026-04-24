@@ -1,0 +1,3 @@
+- Add: Resume last playback position per account and per video.
+- Add: Themed ExoPlayer controls in the full-screen player.
+- Add: App bar in the player with a back action (matches system back).

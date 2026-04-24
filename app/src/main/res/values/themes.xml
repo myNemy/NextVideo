@@ -5,5 +5,13 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
+
+    <!-- Themed ExoPlayer controls (PlayerView). Parent must supply AppCompat/Material view attributes. -->
+    <style name="Theme.NextVideo_ExoPlayer" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="colorPrimary">@color/nc_primary</item>
+        <item name="colorPrimaryDark">@color/nc_primary</item>
+        <item name="colorAccent">@color/nc_primary</item>
+    </style>
 </resources>
 
